@@ -1,102 +1,107 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import SearchIcon from '@mui/icons-material/Search';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import * as React from "react";
+import PropTypes from "prop-types";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import Toolbar from "@mui/material/Toolbar";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import { TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import PersonIcon from "@mui/icons-material/Person";
 import LogoImg from "../Assests/Logo-new.webp";
 
 const drawerWidth = 240;
-const navItems = ['Shops', 'Offers', 'Contact', 'Pages'];
-const groceryItems = [
-  'Grocery',
-  'Bakery',
-  'Makeup',
-  'Bags',
-  'Clothing',
-  'Furniture',
-  'Daily Needs',
-  'Books',
-  'Gadget',
-  'Medicine',
-];
-
-const pagesItems = [
-  'Flash Sale',
-  'Manufacturers/Publishers',
-  'Authors',
-  'FAQ',
-  'Terms & Conditions',
-  'Customer Refund Policy',
-  'Vendor Refund Policy',
-];
+const navItems = ["Shops", "Offers", "Contact", "Pages"];
 
 function DrawerAppBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [groceryAnchorEl, setGroceryAnchorEl] = React.useState(null);
-  const [pagesAnchorEl, setPagesAnchorEl] = React.useState(null);
+  const [isLoginModalOpen, setLoginModalOpen] = React.useState(false);
+  const [isRegisterModalOpen, setRegisterModalOpen] = React.useState(false);
+  const [isUserLoggedIn, setUserLoggedIn] = React.useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const handleGroceryMenuOpen = (event) => {
-    setGroceryAnchorEl(event.currentTarget);
+  const handleLoginModalOpen = () => {
+    setLoginModalOpen(true);
+    setRegisterModalOpen(false);
   };
 
-  const handleGroceryMenuClose = () => {
-    setGroceryAnchorEl(null);
+  const handleLoginModalClose = () => setLoginModalOpen(false);
+
+  const handleRegisterModalOpen = () => {
+    setRegisterModalOpen(true);
+    setLoginModalOpen(false);
   };
 
-  const handlePagesMenuOpen = (event) => {
-    setPagesAnchorEl(event.currentTarget);
+  const handleRegisterModalClose = () => setRegisterModalOpen(false);
+
+  const onLoginSubmit = (data) => {
+    if (data.email === data.password) {
+      setUserLoggedIn(true);
+      setLoginModalOpen(false);
+      window.location.href = "/"; // Redirect to homepage
+    } else {
+      alert("Invalid credentials! Email and password must match.");
+    }
   };
 
-  const handlePagesMenuClose = () => {
-    setPagesAnchorEl(null);
+  const onRegisterSubmit = (data) => {
+    alert(`Successfully Registered with Email: ${data.email}`);
+    setRegisterModalOpen(false);
+    setLoginModalOpen(true); // Open Login modal after registration
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Divider />
       <List>
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+            <ListItemButton sx={{ textAlign: "center" }}>
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
         ))}
-        {/* Add Join Button */}
         <ListItem disablePadding>
-          <ListItemButton sx={{ textAlign: 'center' }}>
-            <Button
-              variant="outlined"
-              sx={{
-                textTransform: 'capitalize',
-                color: 'green',
-                borderColor: 'green',
-                '&:hover': {
-                  backgroundColor: 'green',
-                  color: 'white',
-                },
-              }}
-            >
-              Join
-            </Button>
+          <ListItemButton sx={{ textAlign: "center" }}>
+            {isUserLoggedIn ? (
+              <PersonIcon color="primary" />
+            ) : (
+              <Button
+                variant="outlined"
+                onClick={handleLoginModalOpen}
+                sx={{
+                  textTransform: "capitalize",
+                  color: "green",
+                  borderColor: "green",
+                  "&:hover": {
+                    backgroundColor: "green",
+                    color: "white",
+                  },
+                }}
+              >
+                Join
+              </Button>
+            )}
           </ListItemButton>
         </ListItem>
       </List>
@@ -106,112 +111,61 @@ function DrawerAppBar(props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: 'white', color: 'black' }}>
+      <AppBar component="nav" sx={{ backgroundColor: "white", color: "black" }}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
-          {/* Logo on the left */}
-          <img src={LogoImg} alt="Logo" style={{ marginRight: '10px' }} />
-
-          {/* Grocery Dropdown */}
-          <Button
-            aria-controls="grocery-menu"
-            aria-haspopup="true"
-            onClick={handleGroceryMenuOpen}
+          <img src={LogoImg} alt="Logo" style={{ marginRight: "10px" }} />
+          <Box
             sx={{
-              color: 'black',
-              textTransform: 'capitalize',
-              '&:hover': {
-                color: 'green',
-              },
+              display: { xs: "none", sm: "flex" },
+              alignItems: "center",
+              gap: 2,
+              marginLeft: "auto",
             }}
           >
-            Grocery
-          </Button>
-          <Menu
-            id="grocery-menu"
-            anchorEl={groceryAnchorEl}
-            open={Boolean(groceryAnchorEl)}
-            onClose={handleGroceryMenuClose}
-          >
-            {groceryItems.map((item) => (
-              <MenuItem key={item} onClick={handleGroceryMenuClose}>
-                {item}
-              </MenuItem>
-            ))}
-          </Menu>
-
-          {/* Navigation items with SearchIcon */}
-          <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 2, marginLeft: 'auto' }}>
-            {navItems.slice(0, 3).map((item) => (
+            {navItems.map((item) => (
               <Button
                 key={item}
                 sx={{
-                  color: 'black',
-                  textTransform: 'capitalize',
-                  '&:hover': {
-                    color: 'green',
+                  color: "black",
+                  textTransform: "capitalize",
+                  "&:hover": {
+                    color: "green",
                   },
                 }}
               >
                 {item}
               </Button>
             ))}
-            {/* Pages button with dropdown */}
-            <Button
-              aria-controls="pages-menu"
-              aria-haspopup="true"
-              onClick={handlePagesMenuOpen}
-              sx={{
-                color: 'black',
-                textTransform: 'capitalize',
-                '&:hover': {
-                  color: 'green',
-                },
-              }}
-            >
-              Pages
-            </Button>
-            <Menu
-              id="pages-menu"
-              anchorEl={pagesAnchorEl}
-              open={Boolean(pagesAnchorEl)}
-              onClose={handlePagesMenuClose}
-            >
-              {pagesItems.map((item) => (
-                <MenuItem key={item} onClick={handlePagesMenuClose}>
-                  {item}
-                </MenuItem>
-              ))}
-            </Menu>
-            {/* Search Icon */}
-            <IconButton>
-              <SearchIcon sx={{ color: 'black' }} />
-            </IconButton>
-            {/* Join button */}
-            <Button
-              variant="outlined"
-              sx={{
-                textTransform: 'capitalize',
-                color: 'green',
-                borderColor: 'green',
-                '&:hover': {
-                  backgroundColor: 'green',
-                  color: 'white',
-                },
-              }}
-            >
-              Join
-            </Button>
+            {isUserLoggedIn ? (
+              <PersonIcon color="primary" />
+            ) : (
+              <Button
+                variant="outlined"
+                onClick={handleLoginModalOpen}
+                sx={{
+                  textTransform: "capitalize",
+                  color: "green",
+                  borderColor: "green",
+                  "&:hover": {
+                    backgroundColor: "green",
+                    color: "white",
+                  },
+                }}
+              >
+                Join
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
@@ -222,18 +176,165 @@ function DrawerAppBar(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            display: { xs: "block", sm: "none" },
+            "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
           }}
         >
           {drawer}
         </Drawer>
       </nav>
+
+      {/* Login Modal */}
+      <Modal
+        open={isLoginModalOpen}
+        onClose={handleLoginModalClose}
+        aria-labelledby="login-modal-title"
+        aria-describedby="login-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500,
+            bgcolor: "background.paper",
+            borderRadius: 5,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h5" sx={{ marginBottom: 5, textAlign: "center" }}>
+            Login
+          </Typography>
+          <form onSubmit={handleSubmit(onLoginSubmit)} noValidate>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              {...register("email", { required: "Email is required" })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              {...register("password", { required: "Password is required" })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ marginTop: 4, backgroundColor: "green", color: "white" }}
+            >
+              Log in
+            </Button>
+          </form>
+          <Typography
+            variant="body2"
+            sx={{ marginTop: 5, textAlign: "center", color: "gray" }}
+          >
+            Don't have an account?{" "}
+            <a
+              href="#"
+              onClick={handleRegisterModalOpen}
+              style={{ textDecoration: "underline" }}
+            >
+              Register
+            </a>
+          </Typography>
+        </Box>
+      </Modal>
+
+      {/* Register Modal */}
+      <Modal
+        open={isRegisterModalOpen}
+        onClose={handleRegisterModalClose}
+        aria-labelledby="register-modal-title"
+        aria-describedby="register-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500,
+            bgcolor: "background.paper",
+            borderRadius: 5,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h5" sx={{ marginBottom: 5, textAlign: "center" }}>
+            Register
+          </Typography>
+          <form onSubmit={handleSubmit(onRegisterSubmit)} noValidate>
+            <TextField
+              fullWidth
+              label="Name"
+              variant="outlined"
+              {...register("name", { required: "Name is required" })}
+              error={!!errors.name}
+              helperText={errors.name?.message}
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              {...register("email", { required: "Email is required" })}
+              error={!!errors.email}
+              helperText={errors.email?.message}
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              type="password"
+              variant="outlined"
+              {...register("password", { required: "Password is required" })}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ marginTop: 4, backgroundColor: "blue", color: "white" }}
+            >
+              Register
+            </Button>
+          </form>
+          <Typography
+            variant="body2"
+            sx={{ marginTop: 5, textAlign: "center", color: "gray" }}
+          >
+            Already have an account?{" "}
+            <a
+              href="#"
+              onClick={handleLoginModalOpen}
+              style={{ textDecoration: "underline" }}
+            >
+              Log in
+            </a>
+          </Typography>
+        </Box>
+      </Modal>
     </Box>
   );
 }
+
+DrawerAppBar.propTypes = {
+  window: PropTypes.func,
+};
 
 export default DrawerAppBar;

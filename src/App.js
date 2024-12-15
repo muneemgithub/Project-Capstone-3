@@ -9,9 +9,9 @@ function App() {
   return (
     <div>
       {/* <Sidebar/> */}
-      {/* <Navbar/> */}
+      <Navbar/>
       {/* <Login/> */}
-      <HomePage/>
+      {/* <HomePage/> */}
       {/* <NotFoundPage/> */}
     </div>
   );
