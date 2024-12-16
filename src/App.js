@@ -1,18 +1,14 @@
 import './App.css';
-import Navbar from './Components/Header/header';
 import HomePage from './Components/Home/homepage';
-import Login from './Components/Login/login';
-import Sidebar from './Components/Slice/Sidebar/sidebar';
-import NotFoundPage from './Components/Error/error';
+import Products from './Components/Slice/Products/product';
+
 
 function App() {
   return (
     <div>
-      {/* <Sidebar/> */}
-      <Navbar/>
-      {/* <Login/> */}
-      {/* <HomePage/> */}
-      {/* <NotFoundPage/> */}
+    
+      <HomePage/>
+      <Products/>
     </div>
   );
 }

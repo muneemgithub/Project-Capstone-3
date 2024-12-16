@@ -2,12 +2,22 @@ import React from "react";
 import { Container, Typography, Box, TextField, InputAdornment, IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search"; // Import the search icon
 import bgImg from "../Assests/grocery.webp"; // Ensure the correct path to your image
+import { Swiper, SwiperSlide } from 'swiper/react'; // Import Swiper React components
+import 'swiper/css'; // Import Swiper styles
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
+import { FreeMode, Pagination } from 'swiper/modules'; // Import required modules
+import SliderOne from "../Assests/slider-1.webp";
+import SliderTwo from "../Assests/slider-2.webp";
+import SliderThree from "../Assests/slider-3.webp";
+import SliderFour from "../Assests/slider-4.webp";
+import SliderFive from "../Assests/slider-5.webp";
+import { Padding } from "@mui/icons-material";
 
 const HeroSection = () => {
     return (
         <section>
             {/* Header Section */}
-           
 
             {/* Background Section */}
             <Box
@@ -44,7 +54,7 @@ const HeroSection = () => {
                             color: "black", // Adjust text color for readability
                         }}
                     >
-                        Groceries Delivered in 90 Minute
+                        Groceries Delivered in 90 Minutes
                     </Typography>
 
                     {/* Subheading */}
@@ -58,7 +68,7 @@ const HeroSection = () => {
                             color: "black",
                         }}
                     >
-                        Get your healthy foods & snacks delivered at your doorsteps all day everyday
+                        Get your healthy foods & snacks delivered at your doorsteps all day every day.
                     </Typography>
 
                     {/* Text Field with Button */}
@@ -118,9 +128,98 @@ const HeroSection = () => {
                 </Container>
             </Box>
         </section>
-
-        
     );
 };
 
-export default HeroSection;
+const SliderSection = () => {
+    return (
+        <Box
+        sx={{
+          height: '100%',
+          width: '100%',
+          backgroundColor: 'gray.200',  // Background color equivalent to bg-gray-200
+          marginTop: 3,  // Equivalent to mt-12 (margin-top 3rem or 48px)
+          paddingX: 2,  // Equivalent to px-4 (padding-left and padding-right 1rem or 16px)
+        }}
+      >
+        <Swiper
+          slidesPerView={3}
+          spaceBetween={30}
+          freeMode={true}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[FreeMode, Pagination]}
+          className="w-full h-full"
+        >
+          <SwiperSlide
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.25rem', // Equivalent to text-xl
+              backgroundColor: 'white',
+            }}
+          >
+            <img src={SliderOne} alt="" />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.25rem', // Equivalent to text-xl
+              backgroundColor: 'white',
+            }}
+          >
+            <img src={SliderTwo} alt="" />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.25rem', // Equivalent to text-xl
+              backgroundColor: 'white',
+            }}
+          >
+            <img src={SliderThree} alt="" />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.25rem', // Equivalent to text-xl
+              backgroundColor: 'white',
+            }}
+          >
+            <img src={SliderFour} alt="" />
+          </SwiperSlide>
+          <SwiperSlide
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.25rem', // Equivalent to text-xl
+              backgroundColor: 'white',
+            }}
+          >
+            <img src={SliderFive} alt="" />
+          </SwiperSlide>
+        </Swiper>
+      </Box>
+    
+    );
+};
+
+const HomePage = () => {
+    return (
+        <div>
+            <HeroSection />
+            <SliderSection />
+        </div>
+    );
+};
+
+export default HomePage;
