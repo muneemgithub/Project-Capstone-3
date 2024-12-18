@@ -60,8 +60,12 @@ import Cleaning_supply_astonishImg from "../../Assests/cleaning_supply_astonishI
 import Cleaning_supply_bonaImg from "../../Assests/cleaning_supply_bonaImage.webp"
 import Cleaning_supply_everImg from "../../Assests/cleaning_supply_ever_springImage.webp"
 import Cleaning_supply_glitz_steelImg from "../../Assests/cleaning_supply_glitz_steel_cleanerImage.webp"
-import { Box,  Button,  Typography } from '@mui/material'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {Box, Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia  } from '@mui/material'
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import PetsIcon from '@mui/icons-material/Pets';
+import HomeIcon from '@mui/icons-material/Home';
+import LunchDiningIcon from '@mui/icons-material/LunchDining';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 
 const dummydata = [
     {
@@ -491,92 +495,85 @@ const dummydata = [
         category: "Home & Cleaning", 
     }
 ]
+
 const Products = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedCategory, setSelectedCategory] = useState(null);
+
+    // Categories list
+    const categories = [
+        { name: 'Fruits & Vegetables', icon: <LocalFloristIcon />, key: 'Fruit' },
+        { name: 'Meat', icon: <LunchDiningIcon />, key: 'Meat' },
+        { name: 'Snacks', icon: <ShoppingBasketIcon />, key: 'Snacks' },
+        { name: 'Pet Care', icon: <PetsIcon />, key: 'Pet Care' },
+        { name: 'Home & Cleaning', icon: <HomeIcon />, key: 'Home & Cleaning' },
+    ];
+
+    const handleCategorySelect = (key) => {
+        setSelectedCategory(key);
+    };
 
     // Filter products based on selected category
-    const filteredProducts = dummydata.filter((item) =>
-      selectedCategory === 'All' || item.category === selectedCategory
-    );
+    const filteredProducts = selectedCategory
+        ? dummydata.filter((product) => product.category === selectedCategory)
+        : dummydata;
+
+    // Function to truncate product names if they are longer than 10 characters
+    const truncateName = (name) => {
+        return name.length > 10 ? name.slice(0, 10) + '...' : name;
+    };
+
     return (
-      <>
-        {/* Category Selection Buttons */}
-        <div style={{ marginBottom: '20px' }}>
-          <Button
-            onClick={() => setSelectedCategory('All')}
-            variant={selectedCategory === 'All' ? 'contained' : 'outlined'}
-            style={{ marginRight: '10px' }}
-          >
-            All
-          </Button>
-          <Button
-            onClick={() => setSelectedCategory('Fruit')}
-            variant={selectedCategory === 'Fruit' ? 'contained' : 'outlined'}
-            style={{ marginRight: '10px' }}
-          >
-            Fruits
-          </Button>
-          <Button
-            onClick={() => setSelectedCategory('Meat')}
-            variant={selectedCategory === 'Meat' ? 'contained' : 'outlined'}
-          >
-            Meat
-          </Button>
-        </div>
-  
-        {/* Displaying filtered products */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', marginTop: 20 }}>
-          {filteredProducts.map((item) => (
-            <Box
-              key={item.id}
-              style={{
-                width: '270px',
-                height: '400px',
-                textAlign: 'center',
-                background: 'white',
-                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                borderRadius: '5px',
-                padding: '16px',
-                border: '1px solid #ddd',
-              }}
-            >
-              <img
-                src={item.Image}
-                alt={item.name}
-                style={{ width: '100%', height: 'auto', borderRadius: '5px' }}
-              />
-              <Typography style={{ fontWeight: 'bold', marginTop: '8px' }}>
-                {item.name}
-              </Typography>
-              <Typography
-                style={{
-                  color: 'green',
-                  fontWeight: 'bold',
-                  margin: '8px 0',
-                }}
-              >
-                ${item.Price}
-              </Typography>
-              <Button
-                variant="contained"
-                style={{
-                  backgroundColor: 'green',
-                  color: 'white',
-                  borderRadius: '5px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-                startIcon={<ShoppingCartIcon />}
-              >
-                Add to Cart
-              </Button>
+        <Box display="flex" gap={2}>
+            {/* Sidebar for Category Selection */}
+            <Box>
+                <List>
+                    {categories.map((category) => (
+                        <ListItemButton key={category.key} onClick={() => handleCategorySelect(category.key)}>
+                            <ListItemIcon>{category.icon}</ListItemIcon>
+                            <ListItemText primary={category.name} />
+                        </ListItemButton>
+                    ))}
+                </List>
             </Box>
-          ))}
-        </div>
-      </>
+
+            {/* Product Display Grid */}
+            <Box flex={1}>
+                <Grid container spacing={2}>
+                    {filteredProducts.map((product) => (
+                        <Grid item xs={12} sm={6} md={3} key={product.id}>
+                            <Card sx={{ position: 'relative', height: '350px' }}>
+                                <CardMedia
+                                    component="img"
+                                    height="140"
+                                    image={product.Image}
+                                    alt={product.name}
+                                />
+                                <CardContent>
+                                    <Typography variant="h6">{truncateName(product.name)}</Typography>
+                                    <Typography variant="body2">${product.Price.toFixed(2)}</Typography>
+                                </CardContent>
+
+                                {/* Add to Cart Button */}
+                                <Button 
+                                    variant="contained" 
+                                    color="primary" 
+                                    startIcon={<ShoppingBasketIcon />}
+                                    sx={{
+                                        position: 'absolute',
+                                        bottom: 8,
+                                        right: 8,
+                                    }}
+                                >
+                                    Cart
+                                </Button>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
+        </Box>
     );
-  
-}
+};
+
 
 export default Products;
