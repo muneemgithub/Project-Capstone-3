@@ -1,34 +1,41 @@
-import * as React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  AppBar,
+  Box,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Toolbar,
+  Button,
+  Modal,
+  Typography,
+  TextField,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
-import { TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
 import PersonIcon from "@mui/icons-material/Person";
+import { useForm } from "react-hook-form";
 import LogoImg from "../Assests/Logo-new.webp";
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Shops", "Offers", "Contact", "Pages"];
 
 function DrawerAppBar(props) {
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [isLoginModalOpen, setLoginModalOpen] = React.useState(false);
-  const [isRegisterModalOpen, setRegisterModalOpen] = React.useState(false);
-  const [isUserLoggedIn, setUserLoggedIn] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isLoginModalOpen, setLoginModalOpen] = useState(false);
+  const [isRegisterModalOpen, setRegisterModalOpen] = useState(false);
+  const [isUserLoggedIn, setUserLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const {
     register,
@@ -36,8 +43,10 @@ function DrawerAppBar(props) {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
+
   const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
+    setMobileOpen(!mobileOpen);
   };
 
   const handleLoginModalOpen = () => {
@@ -54,20 +63,46 @@ function DrawerAppBar(props) {
 
   const handleRegisterModalClose = () => setRegisterModalOpen(false);
 
-  const onLoginSubmit = (data) => {
-    if (data.email === data.password) {
-      setUserLoggedIn(true);
-      setLoginModalOpen(false);
-      window.location.href = "/"; // Redirect to homepage
-    } else {
-      alert("Invalid credentials! Email and password must match.");
-    }
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    setUserLoggedIn(false);
+    setUsername("");
+    setAnchorEl(null);
   };
 
   const onRegisterSubmit = (data) => {
-    alert(`Successfully Registered with Email: ${data.email}`);
+    const { name, email, password } = data;
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify({ name, email, password })
+    );
+
+    alert(`Successfully Registered with Email: ${email}`);
     setRegisterModalOpen(false);
-    setLoginModalOpen(true); // Open Login modal after registration
+    setLoginModalOpen(true);
+  };
+
+  const onLoginSubmit = (data) => {
+    const { email, password } = data;
+
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (storedUser && storedUser.email === email && storedUser.password === password) {
+      setUserLoggedIn(true);
+      setUsername(storedUser.name);
+      setLoginModalOpen(false);
+      navigate("/");
+    } else {
+      alert("Invalid credentials! Please try again.");
+    }
   };
 
   const drawer = (
@@ -84,7 +119,10 @@ function DrawerAppBar(props) {
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
             {isUserLoggedIn ? (
-              <PersonIcon color="primary" />
+              <>
+                <PersonIcon color="primary" />
+                <Typography>{username}</Typography>
+              </>
             ) : (
               <Button
                 variant="outlined"
@@ -148,7 +186,22 @@ function DrawerAppBar(props) {
               </Button>
             ))}
             {isUserLoggedIn ? (
-              <PersonIcon color="primary" />
+              <>
+                <Button
+                  onClick={handleMenuOpen}
+                  startIcon={<PersonIcon color="primary" />}
+                  sx={{ textTransform: "capitalize", color: "black" }}
+                >
+                  {username}
+                </Button>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </>
             ) : (
               <Button
                 variant="outlined"
@@ -187,8 +240,8 @@ function DrawerAppBar(props) {
         </Drawer>
       </nav>
 
-      {/* Login Modal */}
-      <Modal
+         {/* Login Modal */}
+         <Modal
         open={isLoginModalOpen}
         onClose={handleLoginModalClose}
         aria-labelledby="login-modal-title"
