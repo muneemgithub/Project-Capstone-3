@@ -66,6 +66,9 @@ import PetsIcon from '@mui/icons-material/Pets';
 import HomeIcon from '@mui/icons-material/Home';
 import LunchDiningIcon from '@mui/icons-material/LunchDining';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import Drawer from '../../Drawer/Drawer'
+import { useDispatch } from 'react-redux'
+import { Addtocart } from '../../../Slices/AddtoCart'
 
 const dummydata = [
     {
@@ -498,7 +501,7 @@ const dummydata = [
 
 const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
-
+const usedipach =useDispatch()
     // Categories list
     const categories = [
         { name: 'Fruits & Vegetables', icon: <LocalFloristIcon />, key: 'Fruit' },
@@ -554,7 +557,7 @@ const Products = () => {
                                 </CardContent>
 
                                 {/* Add to Cart Button */}
-                                <Button 
+                                <Button  onClick={()=>(usedipach(Addtocart(product)))}
                                     variant="contained" 
                                     color="primary" 
                                     startIcon={<ShoppingBasketIcon />}
@@ -571,6 +574,7 @@ const Products = () => {
                     ))}
                 </Grid>
             </Box>
+            <Drawer/>
         </Box>
     );
 };
