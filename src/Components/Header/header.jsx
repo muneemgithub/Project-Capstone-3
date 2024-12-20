@@ -199,6 +199,7 @@ function DrawerAppBar(props) {
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
+                  <MenuItem>Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>

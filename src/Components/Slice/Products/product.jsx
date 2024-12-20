@@ -60,7 +60,7 @@ import Cleaning_supply_astonishImg from "../../Assests/cleaning_supply_astonishI
 import Cleaning_supply_bonaImg from "../../Assests/cleaning_supply_bonaImage.webp"
 import Cleaning_supply_everImg from "../../Assests/cleaning_supply_ever_springImage.webp"
 import Cleaning_supply_glitz_steelImg from "../../Assests/cleaning_supply_glitz_steel_cleanerImage.webp"
-import {Box, Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia  } from '@mui/material'
+import { Box, Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, } from '@mui/material'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import PetsIcon from '@mui/icons-material/Pets';
 import HomeIcon from '@mui/icons-material/Home';
@@ -69,439 +69,444 @@ import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
 import Drawer from '../../Drawer/Drawer'
 import { useDispatch } from 'react-redux'
 import { Addtocart } from '../../../Slices/AddtoCart'
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const dummydata = [
     {
-        id:  1,
+        id: 1,
         name: "Apples",
         Image: AppleImg,
         Price: 1.60,
         category: "Fruit",
     },
     {
-        id:  2,
+        id: 2,
         name: "Blueberries",
         Image: BlueberriesImg,
         Price: 3.00,
         category: "Fruit",
     },
     {
-        id:  3,
+        id: 3,
         name: "Clementines",
         Image: ClementinesImg,
         Price: 2.50,
         category: "Fruit",
     },
     {
-        id:  4,
+        id: 4,
         name: "Dates",
         Image: DatesImg,
         Price: 8.00,
         category: "Fruit",
     },
     {
-        id:  5,
+        id: 5,
         name: "GreenBeans",
         Image: GreenBeansImg,
         Price: 1.20,
         category: "Fruit",
     },
     {
-        id:  6,
+        id: 6,
         name: "Mangoes",
         Image: MangoesImg,
         Price: 2.50,
         category: "Fruit",
     },
     {
-        id:  7,
+        id: 7,
         name: "Pears",
         Image: PearsImg,
         Price: 3.50,
         category: "Fruit",
     },
     {
-        id:  8,
+        id: 8,
         name: "RedCherries",
         Image: RedCherriesImg,
         Price: 1.80,
         category: "Fruit",
     },
     {
-        id:  9,
+        id: 9,
         name: "Strawberry",
         Image: StrawberryImg,
         Price: 8.00,
         category: "Fruit",
     },
     {
-        id:  10,
+        id: 10,
         name: "BabySpinach",
         Image: BabySpinachImg,
         Price: 0.60,
         category: "Fruit",
     },
     {
-        id:  11,
+        id: 11,
         name: "BrusselsSprouts",
         Image: BrusselsSproutsImg,
         Price: 0.60,
         category: "Fruit",
     },
     {
-        id:  12,
+        id: 12,
         name: "Corn",
         Image: CornImg,
         Price: 4.00,
         category: "Fruit",
     },
     {
-        id:  13,
+        id: 13,
         name: "Cucumber",
         Image: CucumberImg,
         Price: 4.00,
         category: "Fruit",
     },
     {
-        id:  14,
+        id: 14,
         name: "Greenbeans",
         Image: GreenbeansImg,
         Price: 4.00,
     },
     {
-        id:  15,
+        id: 15,
         name: "GreenLimes",
         Image: GreenLimesImg,
         Price: 1.50,
         category: "Fruit",
     },
     {
-        id:  16,
+        id: 16,
         name: "MiniPeppers",
         Image: MiniPeppersImg,
         Price: 5.00,
         category: "Fruit",
     },
     {
-        id:  17,
+        id: 17,
         name: "PeeledCarrots",
         Image: PeeledCarrotsImg,
         Price: 2.20,
         category: "Fruit",
     },
     {
-        id:  18,
+        id: 18,
         name: "VeggiePlatter",
         Image: VeggiePlatterImg,
         Price: 3.20,
         category: "Fruit",
     },
     {
-        id:  19,
+        id: 19,
         name: "YellowLimes",
         Image: YellowLimesImg,
         Price: 1.20,
         category: "Fruit",
     },
     {
-        id:  20,
+        id: 20,
         name: "SignatureSalmon",
         Image: SignatureSalmonImg,
         Price: 4.95,
         category: "Meat",
     },
     {
-        id:  21,
+        id: 21,
         name: "Codfillet",
         Image: CodfilletImg,
         Price: 7.50,
         category: "Meat",
     },
     {
-        id:  22,
+        id: 22,
         name: "Swordfish",
         Image: SwordfishImg,
         Price: 7.50,
         category: "Meat",
     },
     {
-        id:  23,
+        id: 23,
         name: "Halibut",
         Image: HalibutImg,
         Price: 12.00,
         category: "Meat",
     },
     {
-        id:  24,
+        id: 24,
         name: "TilapiaFillet",
         Image: TilapiaFilletImg,
         Price: 7.89,
         category: "Meat",
     },
     {
-        id:  25,
+        id: 25,
         name: "Beef",
         Image: BeefImg,
         Price: 6.00,
         category: "Meat",
     },
     {
-        id:  26,
+        id: 26,
         name: "Slicedturkeybreast",
         Image: SlicedturkeybreastImg,
         Price: 7.50,
         category: "Meat",
     },
     {
-        id:  27,
+        id: 27,
         name: "Chickenthigh",
         Image: ChickenthighImg,
         Price: 7.89,
         category: "Meat",
     },
     {
-        id:  28,
+        id: 28,
         name: "Chickenbrest",
         Image: ChickenbrestImg,
         Price: 9.00,
         category: "Meat",
     },
     {
-        id:  29,
+        id: 29,
         name: "StickImg",
         Image: StickImg,
         Price: 12.00,
-        category: "Meat", 
+        category: "Meat",
     },
     {
-        id:  30,
+        id: 30,
         name: "Belmontcustardcream",
         Image: BelmontcustardcreamImg,
         Price: 5.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  31,
+        id: 31,
         name: "Crawforddigestives",
         Image: CrawforddigestivesImg,
         Price: 6.50,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  32,
+        id: 32,
         name: "Crawfordshortie",
         Image: CrawfordshortieImg,
         Price: 5.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  33,
+        id: 33,
         name: "HillBiscuits",
         Image: HillBiscuitsImg,
         Price: 7.50,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  34,
+        id: 34,
         name: "JammieDodgers",
         Image: JammieDodgersImg,
         Price: 7.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  35,
+        id: 35,
         name: "Julischeese",
         Image: JulischeeseImg,
         Price: 5.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  36,
+        id: 36,
         name: "Khongguan",
         Image: KhongguanImg,
         Price: 5.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  37,
+        id: 37,
         name: "Khongguanpremium",
         Image: KhongguanpremiumImg,
         Price: 6.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  38,
+        id: 38,
         name: "Lotusbiscoff",
         Image: LotusbiscoffImg,
         Price: 7.50,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  39,
+        id: 39,
         name: "Artiachfili",
         Image: ArtiachfiliImg,
         Price: 4.00,
-        category: "Snacks", 
+        category: "Snacks",
     },
     {
-        id:  40,
+        id: 40,
         name: "Grain_free",
         Image: Grain_freeImg,
         Price: 25.59,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  41,
+        id: 41,
         name: "HillsscienceImg",
         Image: HillsscienceImg,
         Price: 25.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  42,
+        id: 42,
         name: "Instinct",
         Image: InstinctImg,
         Price: 18.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  43,
+        id: 43,
         name: "Natural",
         Image: NaturalImg,
         Price: 14.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  44,
+        id: 44,
         name: "Prescription",
         Image: PrescriptionImg,
         Price: 16.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  45,
+        id: 45,
         name: "Pro_diet",
         Image: Pro_dietImg,
         Price: 18.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  46,
+        id: 46,
         name: "Purina_pro",
         Image: Purina_proImg,
         Price: 25.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  47,
+        id: 47,
         name: "Dog_food_black",
         Image: Dog_food_blackImg,
         Price: 24.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  48,
+        id: 48,
         name: "Dog_food_black_hawk",
         Image: Dog_food_black_hawkImg,
         Price: 25.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  49,
+        id: 49,
         name: "Dogfoodblackhawk",
         Image: DogfoodblackhawkImg,
         Price: 25.00,
-        category: "Pet Care", 
+        category: "Pet Care",
     },
     {
-        id:  50,
+        id: 50,
         name: "Air_freshner_acana_ozmo",
         Image: Air_freshner_acana_ozmoImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  51,
+        id: 51,
         name: "DogfoodblackAir_freshner_air_wick_essential",
         Image: Air_freshner_air_wick_essentialImg,
         Price: 20.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  52,
+        id: 52,
         name: "Air_freshner_ambipur",
         Image: Air_freshner_ambipurImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  53,
+        id: 53,
         name: "Air_freshner_febreze_air_bora",
         Image: Air_freshner_febreze_air_boraImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  54,
+        id: 54,
         name: "Air_freshner_febreze_air_effects",
         Image: Air_freshner_febreze_air_effectsImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  55,
+        id: 55,
         name: "Air_freshner_febreze_air_hawaiian",
         Image: Air_freshner_febreze_air_hawaiianImg,
         Price: 18.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  56,
+        id: 56,
         name: "Air_freshner_sc_johnson_glade",
         Image: Air_freshner_sc_johnson_gladeImg,
         Price: 18.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  57,
+        id: 57,
         name: "Air_freshner_sc_johnson_glade_clean",
         Image: Air_freshner_sc_johnson_glade_cleanImg,
         Price: 18.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  58,
+        id: 58,
         name: "Cleaning_supply_astonish",
         Image: Cleaning_supply_astonishImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  59,
+        id: 59,
         name: "Cleaning_supply_bonaImg",
         Image: Cleaning_supply_bonaImg,
         Price: 15.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  60,
+        id: 60,
         name: "Cleaning_supply_ever",
         Image: Cleaning_supply_everImg,
         Price: 10.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     },
     {
-        id:  61,
+        id: 61,
         name: "Cleaning_supply_glitz_steel",
         Image: Cleaning_supply_glitz_steelImg,
         Price: 10.00,
-        category: "Home & Cleaning", 
+        category: "Home & Cleaning",
     }
 ]
 
 const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
-const usedipach =useDispatch()
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const dispatch = useDispatch();
+
     // Categories list
     const categories = [
         { name: 'Fruits & Vegetables', icon: <LocalFloristIcon />, key: 'Fruit' },
@@ -515,7 +520,21 @@ const usedipach =useDispatch()
         setSelectedCategory(key);
     };
 
-    // Filter products based on selected category
+    const handleCardClick = (product) => {
+        setSelectedProduct(product);
+        setOpenModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setOpenModal(false);
+        setSelectedProduct(null);
+    };
+
+    const handleAddToCart = (product) => {
+        dispatch(Addtocart(product));
+        alert(`${product.name} added to cart!`);
+    };
+
     const filteredProducts = selectedCategory
         ? dummydata.filter((product) => product.category === selectedCategory)
         : dummydata;
@@ -538,46 +557,86 @@ const usedipach =useDispatch()
                     ))}
                 </List>
             </Box>
-
-            {/* Product Display Grid */}
-            <Box flex={1}>
-                <Grid container spacing={2}>
-                    {filteredProducts.map((product) => (
-                        <Grid item xs={12} sm={6} md={3} key={product.id}>
-                            <Card sx={{ position: 'relative', height: '350px' }}>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={product.Image}
-                                    alt={product.name}
-                                />
-                                <CardContent>
-                                    <Typography variant="h6">{truncateName(product.name)}</Typography>
-                                    <Typography variant="body2">${product.Price.toFixed(2)}</Typography>
-                                </CardContent>
-
-                                {/* Add to Cart Button */}
-                                <Button  onClick={()=>(usedipach(Addtocart(product)))}
-                                    variant="contained" 
-                                    color="primary" 
-                                    startIcon={<ShoppingBasketIcon />}
-                                    sx={{
-                                        position: 'absolute',
-                                        bottom: 8,
-                                        right: 8,
-                                    }}
+    
+            {/* Product Grid */}
+            <Grid container spacing={2}>
+                {filteredProducts.map((product) => (
+                    <Grid item xs={12} sm={6} md={3} key={product.id}> {/* 4 cards in a row */}
+                        <Card sx={{ position: 'relative', height: '100%' }} onClick={() => handleCardClick(product)}>
+                            <CardMedia
+                                component="img"
+                                image={product.Image}
+                                alt={product.name}
+                                height="140"
+                            />
+                            <CardContent>
+                                <Typography variant="h6">{product.name}</Typography>
+                                <Typography variant="body2">${product.Price.toFixed(2)}</Typography>
+                            </CardContent>
+                            <IconButton
+                                onClick={() => dispatch(Addtocart(product))}
+                                color="primary"
+                                sx={{
+                                    position: 'absolute',
+                                    bottom: 8,
+                                    right: 8,
+                                }}
+                            >
+                                <AddShoppingCartIcon />
+                            </IconButton>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
+    
+            {/* Modal for Product Details */}
+            <Modal open={openModal} onClose={handleCloseModal}>
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                    }}
+                >
+                    {selectedProduct && (
+                        <>
+                            <CardMedia
+                                component="img"
+                                image={selectedProduct.Image}
+                                alt={selectedProduct.name}
+                                height="200"
+                            />
+                            <Typography variant="h5" sx={{ mt: 2 }}>
+                                {selectedProduct.name}
+                            </Typography>
+                            <Typography variant="body1" sx={{ mt: 1 }}>
+                                Price: ${selectedProduct.Price.toFixed(2)}
+                            </Typography>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                                <IconButton color="error">
+                                    <FavoriteIcon />
+                                </IconButton>
+                                <Button
+                                    variant="contained"
+                                    startIcon={<AddShoppingCartIcon />}
+                                    onClick={() => handleAddToCart(selectedProduct)}
                                 >
-                                    Cart
+                                    Add to Cart
                                 </Button>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Box>
+                            </Box>
+                        </>
+                    )}
+                </Box>
+            </Modal>
             <Drawer/>
         </Box>
     );
-};
-
+}    
 
 export default Products;
