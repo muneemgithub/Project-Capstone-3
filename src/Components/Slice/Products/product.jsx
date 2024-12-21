@@ -557,38 +557,51 @@ const Products = () => {
                     ))}
                 </List>
             </Box>
-    
+
             {/* Product Grid */}
             <Grid container spacing={2}>
                 {filteredProducts.map((product) => (
                     <Grid item xs={12} sm={6} md={3} key={product.id}> {/* 4 cards in a row */}
-                        <Card sx={{ position: 'relative', height: '100%' }} onClick={() => handleCardClick(product)}>
+                        <Card>
                             <CardMedia
                                 component="img"
+                                height="140"
                                 image={product.Image}
                                 alt={product.name}
-                                height="140"
+                                onClick={() => handleCardClick(product)} // This line opens the modal when the image is clicked
                             />
                             <CardContent>
-                                <Typography variant="h6">{product.name}</Typography>
+                                <Typography variant="h6">{truncateName(product.name)}</Typography>
                                 <Typography variant="body2">${product.Price.toFixed(2)}</Typography>
                             </CardContent>
-                            <IconButton
-                                onClick={() => dispatch(Addtocart(product))}
-                                color="primary"
-                                sx={{
-                                    position: 'absolute',
-                                    bottom: 8,
-                                    right: 8,
-                                }}
-                            >
-                                <AddShoppingCartIcon />
-                            </IconButton>
+                            <Box display="flex" justifyContent="space-between" p={1}>
+                                <Button
+                                    variant="contained"
+                                    size="small"
+                                    endIcon={<AddShoppingCartIcon />}
+                                    onClick={() => handleAddToCart(product)}
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        width: "30%", // Button width
+                                        backgroundColor: "white", // White background when not hovered
+                                        '&:hover': {
+                                            backgroundColor: "green", // Green background on hover
+                                        },
+                                        borderRadius: 1, // Optional: Add border-radius for rounded corners
+                                        padding: "6px 12px", // Optional: Adjust padding for smaller size
+                                        color: "black", // Optional: Text color
+                                        marginLeft: "auto", // Aligns the button to the right side
+                                    }}
+                                >
+                                    Cart
+                                </Button>
+                            </Box>
                         </Card>
                     </Grid>
                 ))}
             </Grid>
-    
+
             {/* Modal for Product Details */}
             <Modal open={openModal} onClose={handleCloseModal}>
                 <Box
@@ -634,9 +647,9 @@ const Products = () => {
                     )}
                 </Box>
             </Modal>
-            <Drawer/>
+            <Drawer />
         </Box>
     );
-}    
+};
 
 export default Products;
