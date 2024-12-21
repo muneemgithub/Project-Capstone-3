@@ -545,7 +545,9 @@ const Products = () => {
     };
 
     return (
-        <Box display="flex" gap={2}>
+        <Box display="flex" gap={2} sx={{
+            marginTop: "5px",
+        }}>
             {/* Sidebar for Category Selection */}
             <Box>
                 <List>
@@ -562,42 +564,91 @@ const Products = () => {
             <Grid container spacing={2}>
                 {filteredProducts.map((product) => (
                     <Grid item xs={12} sm={6} md={3} key={product.id}> {/* 4 cards in a row */}
-                        <Card>
+                        <Card sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', boxShadow: 'none' }}>
+                            {/* Product Image */}
                             <CardMedia
                                 component="img"
-                                height="140"
+                                height="180"
                                 image={product.Image}
                                 alt={product.name}
-                                onClick={() => handleCardClick(product)} // This line opens the modal when the image is clicked
+                                sx={{ borderTopLeftRadius: '8px', borderTopRightRadius: '8px', objectFit: 'contain' }}
+                                onClick={() => handleCardClick(product)} // Opens the modal on image click
                             />
-                            <CardContent>
-                                <Typography variant="h6">{truncateName(product.name)}</Typography>
-                                <Typography variant="body2">${product.Price.toFixed(2)}</Typography>
+
+                            {/* Discount Badge */}
+                            <Box
+                                sx={{
+                                    position: 'absolute',
+                                    top: '8px',
+                                    left: '8px',
+                                    backgroundColor: '#FFD700',
+                                    color: 'white',
+                                    borderRadius: '4px',
+                                    padding: '2px 8px',
+                                    fontSize: '12px',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                {product.discount ? `${product.discount}% OFF` : ''}
+                            </Box>
+
+                            {/* Card Content */}
+                            <CardContent sx={{ padding: '16px' }}>
+                                <Typography variant="body2" color="text.secondary" sx={{ marginBottom: '4px' }}>
+                                    {product.weight}
+                                </Typography>
+                                <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '16px' }}>
+                                    {truncateName(product.name)}
+                                </Typography>
+
+                                {/* Price Section */}
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                                    {product.oldPrice && (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                textDecoration: 'line-through',
+                                                color: '#9e9e9e',
+                                            }}
+                                        >
+                                            ${product.oldPrice.toFixed(2)}
+                                        </Typography>
+                                    )}
+                                    <Typography
+                                        variant="h6"
+                                        sx={{
+                                            fontWeight: 'bold',
+                                            fontSize: '18px',
+                                            color: '#4caf50',
+                                        }}
+                                    >
+                                        ${product.Price.toFixed(2)}
+                                    </Typography>
+                                </Box>
                             </CardContent>
-                            <Box display="flex" justifyContent="space-between" p={1}>
+
+                            {/* Action Buttons */}
+                            <Box sx={{ display: "flex", justifyContent: "flex-end", padding: "16px" }}>
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    endIcon={<AddShoppingCartIcon />}
-                                    onClick={() => handleAddToCart(product)}
                                     sx={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        width: "30%", // Button width
-                                        backgroundColor: "white", // White background when not hovered
+                                        backgroundColor: '#4caf50',
+                                        color: 'white',
+                                        textTransform: 'none',
                                         '&:hover': {
-                                            backgroundColor: "green", // Green background on hover
+                                            backgroundColor: '#43a047',
                                         },
-                                        borderRadius: 1, // Optional: Add border-radius for rounded corners
-                                        padding: "6px 12px", // Optional: Adjust padding for smaller size
-                                        color: "black", // Optional: Text color
-                                        marginLeft: "auto", // Aligns the button to the right side
+                                        marginLeft: "auto", // Aligns the button to the right
                                     }}
+                                    onClick={() => handleAddToCart(product)}
                                 >
-                                    Cart
+                                    🛒 Cart
                                 </Button>
                             </Box>
+
                         </Card>
+
                     </Grid>
                 ))}
             </Grid>
@@ -610,43 +661,94 @@ const Products = () => {
                         top: '50%',
                         left: '50%',
                         transform: 'translate(-50%, -50%)',
-                        width: 400,
+                        width: 600,
                         bgcolor: 'background.paper',
                         boxShadow: 24,
                         p: 4,
                         borderRadius: 2,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        gap: 3,
                     }}
                 >
                     {selectedProduct && (
                         <>
+                            {/* Product Image */}
                             <CardMedia
                                 component="img"
                                 image={selectedProduct.Image}
                                 alt={selectedProduct.name}
-                                height="200"
+                                sx={{
+                                    width: 200,
+                                    height: 200,
+                                    objectFit: 'contain',
+                                    borderRadius: 2,
+                                }}
                             />
-                            <Typography variant="h5" sx={{ mt: 2 }}>
-                                {selectedProduct.name}
-                            </Typography>
-                            <Typography variant="body1" sx={{ mt: 1 }}>
-                                Price: ${selectedProduct.Price.toFixed(2)}
-                            </Typography>
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                                <IconButton color="error">
-                                    <FavoriteIcon />
-                                </IconButton>
-                                <Button
-                                    variant="contained"
-                                    startIcon={<AddShoppingCartIcon />}
-                                    onClick={() => handleAddToCart(selectedProduct)}
+
+                            {/* Product Details */}
+                            <Box sx={{ flex: 1 }}>
+                                {/* Product Name */}
+                                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                    {selectedProduct.name}
+                                </Typography>
+
+                                {/* Product Description */}
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{ mb: 2 }}
                                 >
-                                    Add to Cart
-                                </Button>
+                                    {selectedProduct.description || "Discover the perfect addition to your daily needs with our premium-quality product. Designed to deliver unmatched satisfaction, it combines reliability and value. Whether for home or personal use, it's crafted to meet your expectations effortlessly. Shop now and experience the difference!"}
+                                </Typography>
+
+                                {/* Price and Discount */}
+                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                    <Typography
+                                        variant="h6"
+                                        sx={{ fontWeight: 'bold', color: 'primary.main', mr: 1 }}
+                                    >
+                                        ${selectedProduct.Price.toFixed(2)}
+                                    </Typography>
+                                    {selectedProduct.originalPrice && (
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                textDecoration: 'line-through',
+                                                color: 'text.secondary',
+                                            }}
+                                        >
+                                            ${selectedProduct.originalPrice.toFixed(2)}
+                                        </Typography>
+                                    )}
+                                </Box>
+
+                                {/* Available Quantity */}
+                                <Typography variant="body2" sx={{ mb: 2 }}>
+                                    {selectedProduct.quantity} pieces available
+                                </Typography>
+
+                                {/* Buttons */}
+                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <IconButton color="error">
+                                        <FavoriteIcon />
+                                    </IconButton>
+
+                                    <Button
+                                        variant="contained"
+                                        startIcon={<AddShoppingCartIcon />}
+                                        onClick={() => handleAddToCart(selectedProduct)}
+                                    >
+                                        Add to Cart
+                                    </Button>
+                                </Box>
                             </Box>
                         </>
                     )}
                 </Box>
             </Modal>
+
+
             <Drawer />
         </Box>
     );

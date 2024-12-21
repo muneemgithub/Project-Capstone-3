@@ -36,6 +36,9 @@ function DrawerAppBar(props) {
   const [isUserLoggedIn, setUserLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isProfileModalOpen, setProfileModalOpen] = useState(false);
+  const [profileUsername, setProfileUsername] = useState(username);
+  const [profileEmail, setProfileEmail] = useState("");
 
   const {
     register,
@@ -75,6 +78,19 @@ function DrawerAppBar(props) {
     setUserLoggedIn(false);
     setUsername("");
     setAnchorEl(null);
+  };
+
+  const handleProfileModalOpen = () => {
+    setProfileModalOpen(true);
+    setProfileUsername(username); // Pre-fill with the current username
+    setProfileEmail(""); // Optionally, pre-fill with the current email if needed
+  };
+
+  const handleProfileModalClose = () => setProfileModalOpen(false);
+
+  const handleProfileSave = () => {
+    setUsername(profileUsername); // Update the main username
+    setProfileModalOpen(false); // Close the modal
   };
 
   const onRegisterSubmit = (data) => {
@@ -199,7 +215,7 @@ function DrawerAppBar(props) {
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem onClick={handleProfileModalOpen}>Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>
@@ -241,8 +257,57 @@ function DrawerAppBar(props) {
         </Drawer>
       </nav>
 
-         {/* Login Modal */}
-         <Modal
+      {/* Profile Modal */}
+      <Modal
+        open={isProfileModalOpen}
+        onClose={handleProfileModalClose}
+        aria-labelledby="profile-modal-title"
+        aria-describedby="profile-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 5,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h6" sx={{ marginBottom: 3, textAlign: "center" }}>
+            Edit Profile
+          </Typography>
+          <TextField
+            fullWidth
+            label="Username"
+            variant="outlined"
+            value={profileUsername}
+            onChange={(e) => setProfileUsername(e.target.value)}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            value={profileEmail}
+            onChange={(e) => setProfileEmail(e.target.value)}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleProfileSave}
+            sx={{ marginTop: 3, backgroundColor: "green", color: "white" }}
+          >
+            Save
+          </Button>
+        </Box>
+      </Modal>
+
+      {/* Login Modal */}
+      <Modal
         open={isLoginModalOpen}
         onClose={handleLoginModalClose}
         aria-labelledby="login-modal-title"
