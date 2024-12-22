@@ -60,7 +60,7 @@ import Cleaning_supply_astonishImg from "../../Assests/cleaning_supply_astonishI
 import Cleaning_supply_bonaImg from "../../Assests/cleaning_supply_bonaImage.webp"
 import Cleaning_supply_everImg from "../../Assests/cleaning_supply_ever_springImage.webp"
 import Cleaning_supply_glitz_steelImg from "../../Assests/cleaning_supply_glitz_steel_cleanerImage.webp"
-import { Box, Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, } from '@mui/material'
+import { Box, Button, Typography, List, ListItemButton, ListItemText, Card, ListItemIcon, CardContent, Grid, CardMedia, Modal, IconButton, AccordionSummary, AccordionDetails, Accordion, } from '@mui/material'
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import PetsIcon from '@mui/icons-material/Pets';
 import HomeIcon from '@mui/icons-material/Home';
@@ -71,6 +71,7 @@ import { useDispatch } from 'react-redux'
 import { Addtocart } from '../../../Slices/AddtoCart'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const dummydata = [
     {
@@ -552,10 +553,24 @@ const Products = () => {
             <Box>
                 <List>
                     {categories.map((category) => (
-                        <ListItemButton key={category.key} onClick={() => handleCategorySelect(category.key)}>
-                            <ListItemIcon>{category.icon}</ListItemIcon>
-                            <ListItemText primary={category.name} />
-                        </ListItemButton>
+                        <Accordion key={category.key} disableGutters elevation={0} square>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls={`${category.key}-content`}
+                                id={`${category.key}-header`}
+                            >
+                                <ListItemIcon>{category.icon}</ListItemIcon>
+                                <ListItemText primary={category.name} />
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <List disablePadding>
+                                    <ListItemButton onClick={() => handleCategorySelect(category.key)}>
+                                        <ListItemText primary={`${category.name}`} />
+                                    </ListItemButton>
+                                  
+                                </List>
+                            </AccordionDetails>
+                        </Accordion>
                     ))}
                 </List>
             </Box>
@@ -699,7 +714,7 @@ const Products = () => {
                                     color="text.secondary"
                                     sx={{ mb: 2 }}
                                 >
-                                    {selectedProduct.description || "Discover the perfect addition to your daily needs with our premium-quality product. Designed to deliver unmatched satisfaction, it combines reliability and value. Whether for home or personal use, it's crafted to meet your expectations effortlessly. Shop now and experience the difference!"}
+                                    {selectedProduct.description || "Discover the perfect addition to your daily needs with our premium-quality product."}
                                 </Typography>
 
                                 {/* Price and Discount */}
@@ -748,10 +763,12 @@ const Products = () => {
                 </Box>
             </Modal>
 
-
             <Drawer />
         </Box>
     );
 };
 
 export default Products;
+
+
+
