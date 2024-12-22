@@ -23,7 +23,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
 import { useForm } from "react-hook-form";
 import LogoImg from "../Assests/Logo-new.webp";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 const navItems = ["Shops", "Offers", "Contact", "Pages"];
@@ -39,6 +39,7 @@ function DrawerAppBar(props) {
   const [isProfileModalOpen, setProfileModalOpen] = useState(false);
   const [profileUsername, setProfileUsername] = useState(username);
   const [profileEmail, setProfileEmail] = useState("");
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
 
   const {
     register,
@@ -101,6 +102,7 @@ function DrawerAppBar(props) {
       JSON.stringify({ name, email, password })
     );
 
+    setLoginData({ email, password });
     alert(`Successfully Registered with Email: ${email}`);
     setRegisterModalOpen(false);
     setLoginModalOpen(true);
@@ -179,6 +181,7 @@ function DrawerAppBar(props) {
             <MenuIcon />
           </IconButton>
           <img src={LogoImg} alt="Logo" style={{ marginRight: "10px" }} />
+
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
@@ -215,7 +218,9 @@ function DrawerAppBar(props) {
                   open={Boolean(anchorEl)}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem onClick={handleProfileModalOpen}>Profile</MenuItem>
+                  <MenuItem>
+                    <Link to="/profile">Profile</Link>
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>
@@ -257,55 +262,6 @@ function DrawerAppBar(props) {
         </Drawer>
       </nav>
 
-      {/* Profile Modal */}
-      <Modal
-        open={isProfileModalOpen}
-        onClose={handleProfileModalClose}
-        aria-labelledby="profile-modal-title"
-        aria-describedby="profile-modal-description"
-      >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            borderRadius: 5,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography variant="h6" sx={{ marginBottom: 3, textAlign: "center" }}>
-            Edit Profile
-          </Typography>
-          <TextField
-            fullWidth
-            label="Username"
-            variant="outlined"
-            value={profileUsername}
-            onChange={(e) => setProfileUsername(e.target.value)}
-            sx={{ marginBottom: 2 }}
-          />
-          <TextField
-            fullWidth
-            label="Email"
-            variant="outlined"
-            value={profileEmail}
-            onChange={(e) => setProfileEmail(e.target.value)}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={handleProfileSave}
-            sx={{ marginTop: 3, backgroundColor: "green", color: "white" }}
-          >
-            Save
-          </Button>
-        </Box>
-      </Modal>
-
       {/* Login Modal */}
       <Modal
         open={isLoginModalOpen}
@@ -334,6 +290,7 @@ function DrawerAppBar(props) {
               fullWidth
               label="Email"
               variant="outlined"
+              defaultValue={loginData.email}
               {...register("email", { required: "Email is required" })}
               error={!!errors.email}
               helperText={errors.email?.message}
@@ -344,6 +301,7 @@ function DrawerAppBar(props) {
               label="Password"
               type="password"
               variant="outlined"
+              defaultValue={loginData.password}
               {...register("password", { required: "Password is required" })}
               error={!!errors.password}
               helperText={errors.password?.message}
@@ -446,6 +404,56 @@ function DrawerAppBar(props) {
               Log in
             </a>
           </Typography>
+        </Box>
+      </Modal>
+
+      {/* Profile Modal */}
+      <Modal
+        open={isProfileModalOpen}
+        onClose={handleProfileModalClose}
+        aria-labelledby="profile-modal-title"
+        aria-describedby="profile-modal-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            borderRadius: 5,
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h5" sx={{ marginBottom: 3 }}>
+            Edit Profile
+          </Typography>
+          <TextField
+            fullWidth
+            label="Username"
+            variant="outlined"
+            value={profileUsername}
+            onChange={(e) => setProfileUsername(e.target.value)}
+            sx={{ marginBottom: 2 }}
+          />
+          <TextField
+            fullWidth
+            label="Email"
+            variant="outlined"
+            value={profileEmail}
+            onChange={(e) => setProfileEmail(e.target.value)}
+            sx={{ marginBottom: 2 }}
+          />
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={handleProfileSave}
+            sx={{ backgroundColor: "green", color: "white" }}
+          >
+            Save
+          </Button>
         </Box>
       </Modal>
     </Box>
