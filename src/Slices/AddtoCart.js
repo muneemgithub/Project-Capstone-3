@@ -6,8 +6,6 @@ export const counterSlice = createSlice({
     name: "Cart",
     initialState: {
         cartitems: [],
-
-
     },
 
     reducers: {

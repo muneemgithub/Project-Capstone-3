@@ -72,6 +72,9 @@ import { Addtocart } from '../../../Slices/AddtoCart'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TemporaryDrawer from '../Sidebar/sidebar'
+import { faviratecard } from '../../../Slices/favirate'
+
 
 const dummydata = [
     {
@@ -506,7 +509,17 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [openModal, setOpenModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const dispatch = useDispatch();
+
+
+
+      const [show, setShow] = React.useState(false);
+    
+      const toggleDrawere = (newOpen) => () => {
+        setShow(newOpen);
+      };
+    
 
     // Categories list
     const categories = [
@@ -519,6 +532,11 @@ const Products = () => {
 
     const handleCategorySelect = (key) => {
         setSelectedCategory(key);
+    };
+    // Function to toggle drawer
+    const toggleDrawer = (open) => {
+        console.log(`Drawer state: ${open}`);
+        setIsDrawerOpen(open);
     };
 
     const handleCardClick = (product) => {
@@ -567,7 +585,7 @@ const Products = () => {
                                     <ListItemButton onClick={() => handleCategorySelect(category.key)}>
                                         <ListItemText primary={`${category.name}`} />
                                     </ListItemButton>
-                                  
+
                                 </List>
                             </AccordionDetails>
                         </Accordion>
@@ -672,17 +690,17 @@ const Products = () => {
             <Modal open={openModal} onClose={handleCloseModal}>
                 <Box
                     sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
                         width: 600,
-                        bgcolor: 'background.paper',
+                        bgcolor: "background.paper",
                         boxShadow: 24,
                         p: 4,
                         borderRadius: 2,
-                        display: 'flex',
-                        flexDirection: 'row',
+                        display: "flex",
+                        flexDirection: "row",
                         gap: 3,
                     }}
                 >
@@ -696,32 +714,26 @@ const Products = () => {
                                 sx={{
                                     width: 200,
                                     height: 200,
-                                    objectFit: 'contain',
+                                    objectFit: "contain",
                                     borderRadius: 2,
                                 }}
                             />
 
                             {/* Product Details */}
                             <Box sx={{ flex: 1 }}>
-                                {/* Product Name */}
-                                <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 1 }}>
+                                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
                                     {selectedProduct.name}
                                 </Typography>
 
-                                {/* Product Description */}
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                    sx={{ mb: 2 }}
-                                >
-                                    {selectedProduct.description || "Discover the perfect addition to your daily needs with our premium-quality product."}
+                                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                    {selectedProduct.description ||
+                                        "Discover the perfect addition to your daily needs with our premium-quality product."}
                                 </Typography>
 
-                                {/* Price and Discount */}
-                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                                     <Typography
                                         variant="h6"
-                                        sx={{ fontWeight: 'bold', color: 'primary.main', mr: 1 }}
+                                        sx={{ fontWeight: "bold", color: "primary.main", mr: 1 }}
                                     >
                                         ${selectedProduct.Price.toFixed(2)}
                                     </Typography>
@@ -729,8 +741,8 @@ const Products = () => {
                                         <Typography
                                             variant="body2"
                                             sx={{
-                                                textDecoration: 'line-through',
-                                                color: 'text.secondary',
+                                                textDecoration: "line-through",
+                                                color: "text.secondary",
                                             }}
                                         >
                                             ${selectedProduct.originalPrice.toFixed(2)}
@@ -738,15 +750,21 @@ const Products = () => {
                                     )}
                                 </Box>
 
-                                {/* Available Quantity */}
                                 <Typography variant="body2" sx={{ mb: 2 }}>
                                     {selectedProduct.quantity} pieces available
                                 </Typography>
 
-                                {/* Buttons */}
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <IconButton color="error">
-                                        <FavoriteIcon />
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    {/* Favorite Icon to Open Drawer */}
+                                    <IconButton onClick={()=>(dispatch(faviratecard(selectedProduct)))} color="error" >
+                                        <FavoriteIcon />   
+                                        {/* this is a favitee */}
                                     </IconButton>
 
                                     <Button
@@ -763,7 +781,37 @@ const Products = () => {
                 </Box>
             </Modal>
 
+            {/* Drawer */}
+      <Drawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={() => toggleDrawer(false)}
+      >
+        <Box
+          sx={{
+            width: 250,
+            p: 2,
+          }}
+          role="presentation"
+        >
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Favorite Items
+          </Typography>
+          {/* Add content for the drawer here */}
+          <Typography variant="body2">You can add drawer content here!</Typography>
+        </Box>
+      </Drawer>
+    
             <Drawer />
+
+
+           
+          
+         <Button  onClick={toggleDrawere(true)}>  hello muneem </Button>
+
+
+          
+            <TemporaryDrawer show={show} toggleDrawere={toggleDrawere} />
         </Box>
     );
 };

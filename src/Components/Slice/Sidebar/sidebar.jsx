@@ -1,92 +1,39 @@
-// import React, { useState } from 'react';
-// import { Drawer, List, ListItem, ListItemText, Collapse } from '@mui/material';
-// import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import { useSelector } from 'react-redux';
 
-// const Sidebar = ({ setCategory }) => {
-//   const [openCategories, setOpenCategories] = useState({
-//     fruitsVegetables: true,
-//     meatFish: false,
-//     snacks: false,
-//   });
 
-//   const handleToggle = (category) => {
-//     setOpenCategories((prev) => ({
-//       ...prev,
-//       [category]: !prev[category],
-//     }));
-//   };
+function TemporaryDrawer(props) {
+    const {show,toggleDrawere}=props
+    const { Favire } = useSelector((state) => state.Favirate); 
+    console.log(Favire); // Output: Array from state
+    
+    
+  const DrawerList = (
+    <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawere(false)}>
+    
+      <Divider />
+   
+    </Box>
+  );
 
-//   return (
-//     <Drawer
-//       variant="permanent"
-//       anchor="left"
-//       sx={{
-//         '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box' },
-//       }}
-//     >
-//       <List>
-//         {/* Fruits & Vegetables */}
-//         <ListItem button onClick={() => handleToggle('fruitsVegetables')}>
-//           <ListItemText primary="Fruits & Vegetables" />
-//           {openCategories.fruitsVegetables ? <ExpandLess /> : <ExpandMore />}
-//         </ListItem>
-//         <Collapse in={openCategories.fruitsVegetables} timeout="auto" unmountOnExit>
-//           <List component="div" disablePadding>
-//             <ListItem button onClick={() => setCategory('fruits')}>
-//               <ListItemText primary="Fruits" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('vegetables')}>
-//               <ListItemText primary="Vegetables" />
-//             </ListItem>
-//           </List>
-//         </Collapse>
-
-//         {/* Meat & Fish */}
-//         <ListItem button onClick={() => handleToggle('meatFish')}>
-//           <ListItemText primary="Meat & Fish" />
-//           {openCategories.meatFish ? <ExpandLess /> : <ExpandMore />}
-//         </ListItem>
-//         <Collapse in={openCategories.meatFish} timeout="auto" unmountOnExit>
-//           <List component="div" disablePadding>
-//             <ListItem button onClick={() => setCategory('freshFish')}>
-//               <ListItemText primary="Fresh Fish" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('meat')}>
-//               <ListItemText primary="Meat" />
-//             </ListItem>
-//           </List>
-//         </Collapse>
-
-//         {/* Snacks */}
-//         <ListItem button onClick={() => handleToggle('snacks')}>
-//           <ListItemText primary="Snacks" />
-//           {openCategories.snacks ? <ExpandLess /> : <ExpandMore />}
-//         </ListItem>
-//         <Collapse in={openCategories.snacks} timeout="auto" unmountOnExit>
-//           <List component="div" disablePadding>
-//             <ListItem button onClick={() => setCategory('nutsBiscuits')}>
-//               <ListItemText primary="Nuts & Biscuits" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('chocolates')}>
-//               <ListItemText primary="Chocolates" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('crisps')}>
-//               <ListItemText primary="Crisps" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('noodlesPasta')}>
-//               <ListItemText primary="Noodles & Pasta" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('sauce')}>
-//               <ListItemText primary="Sauce" />
-//             </ListItem>
-//             <ListItem button onClick={() => setCategory('soup')}>
-//               <ListItemText primary="Soup" />
-//             </ListItem>
-//           </List>
-//         </Collapse>
-//       </List>
-//     </Drawer>
-//   );
-// };
-
-// export default Sidebar;
+  return (
+    <div>
+    
+      <Drawer open={show} onClose={toggleDrawere(false)}>
+        {DrawerList}
+      </Drawer>
+    </div>
+  );
+}
+export default  TemporaryDrawer;
