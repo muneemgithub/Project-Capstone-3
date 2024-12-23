@@ -72,7 +72,7 @@ import { Addtocart } from '../../../Slices/AddtoCart'
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TemporaryDrawer from '../Sidebar/sidebar'
+import TemporaryDrawer from '../Sidebar/sidebar';
 import { faviratecard } from '../../../Slices/favirate'
 
 
@@ -514,12 +514,12 @@ const Products = () => {
 
 
 
-      const [show, setShow] = React.useState(false);
-    
-      const toggleDrawere = (newOpen) => () => {
+    const [show, setShow] = React.useState(false);
+
+    const toggleDrawere = (newOpen) => () => {
         setShow(newOpen);
-      };
-    
+    };
+
 
     // Categories list
     const categories = [
@@ -762,8 +762,8 @@ const Products = () => {
                                     }}
                                 >
                                     {/* Favorite Icon to Open Drawer */}
-                                    <IconButton onClick={()=>(dispatch(faviratecard(selectedProduct)))} color="error" >
-                                        <FavoriteIcon />   
+                                    <IconButton onClick={() => (dispatch(faviratecard(selectedProduct)))} color="error" >
+                                        <FavoriteIcon />
                                         {/* this is a favitee */}
                                     </IconButton>
 
@@ -782,35 +782,28 @@ const Products = () => {
             </Modal>
 
             {/* Drawer */}
-      <Drawer
-        anchor="left"
-        open={isDrawerOpen}
-        onClose={() => toggleDrawer(false)}
-      >
-        <Box
-          sx={{
-            width: 250,
-            p: 2,
-          }}
-          role="presentation"
-        >
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Favorite Items
-          </Typography>
-          {/* Add content for the drawer here */}
-          <Typography variant="body2">You can add drawer content here!</Typography>
-        </Box>
-      </Drawer>
-    
+            <Drawer
+                anchor="left"
+                open={isDrawerOpen}
+                onClose={() => toggleDrawer(false)}
+            >
+                <Box
+                    sx={{
+                        width: 250,
+                        p: 2,
+                    }}
+                    role="presentation"
+                >
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        Favorite Items
+                    </Typography>
+                    {/* Add content for the drawer here */}
+                    <Typography variant="body2">You can add drawer content here!</Typography>
+                </Box>
+            </Drawer>
+
             <Drawer />
-
-
-           
-          
-         <Button  onClick={toggleDrawere(true)}>  hello muneem </Button>
-
-
-          
+            {/* Button positioned on the left */}
             <TemporaryDrawer show={show} toggleDrawere={toggleDrawere} />
         </Box>
     );
