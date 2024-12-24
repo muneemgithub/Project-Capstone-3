@@ -408,7 +408,7 @@ function DrawerAppBar(props) {
       </Modal>
 
       {/* Profile Modal */}
-      <Modal
+      {/* <Modal
         open={isProfileModalOpen}
         onClose={handleProfileModalClose}
         aria-labelledby="profile-modal-title"
@@ -455,7 +455,7 @@ function DrawerAppBar(props) {
             Save
           </Button>
         </Box>
-      </Modal>
+      </Modal> */}
     </Box>
   );
 }
