@@ -117,7 +117,7 @@ function DrawerAppBar(props) {
       setUserLoggedIn(true);
       setUsername(storedUser.name);
       setLoginModalOpen(false);
-      navigate("/home");
+      navigate("/");
     } else {
       alert("Invalid credentials! Please try again.");
     }
@@ -142,21 +142,33 @@ function DrawerAppBar(props) {
                 <Typography>{username}</Typography>
               </>
             ) : (
-              <Button
-                variant="outlined"
-                onClick={handleLoginModalOpen}
+              <Box
                 sx={{
-                  textTransform: "capitalize",
-                  color: "green",
-                  borderColor: "green",
-                  "&:hover": {
-                    backgroundColor: "green",
-                    color: "white",
-                  },
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  height: "100%",
+                  textAlign: "center",
                 }}
               >
-                Join
-              </Button>
+                <Button
+                  variant="outlined"
+                  onClick={handleLoginModalOpen}
+                  sx={{
+                    textTransform: "capitalize",
+                    color: "green",
+                    borderColor: "green",
+                    "&:hover": {
+                      backgroundColor: "green",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Join
+                </Button>
+              </Box>
+
             )}
           </ListItemButton>
         </ListItem>
@@ -181,7 +193,7 @@ function DrawerAppBar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar component="nav" sx={{ backgroundColor: "#fafafa", color: "black" }}>
+      <AppBar component="nav" sx={{ backgroundColor: "#fafafa", color: "black", boxShadow: "none" }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -192,7 +204,9 @@ function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <img src={LogoImg} alt="Logo" style={{ marginRight: "10px" }} />
+          <Link to="/">
+            <img src={LogoImg} alt="Logo" style={{ marginRight: "10px", cursor: "pointer" }} />
+          </Link>
 
           <Box
             sx={{
@@ -219,26 +233,6 @@ function DrawerAppBar(props) {
             ))}
             {isUserLoggedIn ? (
               <>
-                <Button
-                  onClick={handleMenuOpen}
-                  startIcon={<PersonIcon color="primary" />}
-                  sx={{ textTransform: "capitalize", color: "black" }}
-                >
-                  {username}
-                </Button>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                >
-                  <MenuItem>
-                    <Link to="/home" onClick={handleProfileModalOpen}>Profile</Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </Menu>
-              </>
-            ) : (
-              <ListItem disablePadding>
                 <Box
                   sx={{
                     display: "flex",
@@ -250,23 +244,53 @@ function DrawerAppBar(props) {
                   }}
                 >
                   <Button
-                  className=" sm:[ms-12]"
-                    variant="outlined"
-                    onClick={handleLoginModalOpen}
-                    sx={{
-                      textTransform: "capitalize",
-                      color: "green",
-                      borderColor: "green",
-                      "&:hover": {
-                        backgroundColor: "green",
-                        color: "white",
-                      },
-                    }}
+                    onClick={handleMenuOpen}
+                    startIcon={<PersonIcon color="primary" />}
+                    sx={{ textTransform: "capitalize", color: "black" }}
                   >
-                    Join
+                    {username}
                   </Button>
                 </Box>
-              </ListItem>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem>
+                    <Link to="/" onClick={handleProfileModalOpen}>Profile</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%", // Ensures the Box spans the full width of the drawer
+                  height: "100%", // Optional: Adjust height if needed
+                  textAlign: "center",
+                }}
+              >
+                <Button
+                  className=" sm:[ms-12]"
+                  variant="outlined"
+                  onClick={handleLoginModalOpen}
+                  sx={{
+                    textTransform: "capitalize",
+                    color: "green",
+                    borderColor: "green",
+                    "&:hover": {
+                      backgroundColor: "green",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Join
+                </Button>
+              </Box>
 
             )}
           </Box>
