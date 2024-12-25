@@ -8,8 +8,7 @@ import Layout from "./Components/Layout/layout"
 import HomePage from './Components/Home/homepage';
 import { Provider } from 'react-redux';
 import  Store  from "./Store/Store"
-import Profile from "./Components/profile/Profile";
-import ProtectedRoute from "./Components/protectedroute/ProtectedtRoute";
+
 
 const router = createBrowserRouter([
   {
@@ -23,14 +22,6 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <HomePage/>,
-      },
-      {
-        path: "/profile",
-        element: (
-          // <ProtectedRoute>
-            <Profile />
-          // </ProtectedRoute>
-        ),
       },
       {
         path: "*", // Catch-all route for undefined paths

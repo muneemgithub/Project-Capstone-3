@@ -512,14 +512,11 @@ const Products = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(true);
     const dispatch = useDispatch();
 
-
-
     const [show, setShow] = React.useState(false);
 
     const toggleDrawere = (newOpen) => () => {
         setShow(newOpen);
     };
-
 
     // Categories list
     const categories = [
@@ -565,10 +562,11 @@ const Products = () => {
 
     return (
         <Box display="flex" gap={2} sx={{
+            flexDirection: { xs: 'column', md: 'row' }, // Responsive layout
             marginTop: "5px",
         }}>
             {/* Sidebar for Category Selection */}
-            <Box>
+            <Box sx={{ width: { xs: '100%', md: 'auto' } }}> {/* Adjust width for responsiveness */}
                 <List>
                     {categories.map((category) => (
                         <Accordion key={category.key} disableGutters elevation={0} square>
@@ -594,7 +592,7 @@ const Products = () => {
             </Box>
 
             {/* Product Grid */}
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ flex: 1 }}>
                 {filteredProducts.map((product) => (
                     <Grid item xs={12} sm={6} md={3} key={product.id}> {/* 4 cards in a row */}
                         <Card sx={{ border: '1px solid #e0e0e0', borderRadius: '8px', boxShadow: 'none' }}>
@@ -694,13 +692,13 @@ const Products = () => {
                         top: "50%",
                         left: "50%",
                         transform: "translate(-50%, -50%)",
-                        width: 600,
+                        width: { xs: 300, sm: 400, md: 600 }, // Responsive width
                         bgcolor: "background.paper",
                         boxShadow: 24,
                         p: 4,
                         borderRadius: 2,
                         display: "flex",
-                        flexDirection: "row",
+                        flexDirection: { xs: "column", md: "row" }, // Stack on small screens
                         gap: 3,
                     }}
                 >
@@ -712,7 +710,7 @@ const Products = () => {
                                 image={selectedProduct.Image}
                                 alt={selectedProduct.name}
                                 sx={{
-                                    width: 200,
+                                    width: { xs: "100%", md: 200 }, // Responsive image size
                                     height: 200,
                                     objectFit: "contain",
                                     borderRadius: 2,
@@ -720,12 +718,28 @@ const Products = () => {
                             />
 
                             {/* Product Details */}
-                            <Box sx={{ flex: 1 }}>
-                                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }}>
+                            <Box sx={{ flex: 1, overflowWrap: "break-word" }}>
+                                <Typography
+                                    variant="h5"
+                                    sx={{
+                                        fontWeight: "bold",
+                                        mb: 1,
+                                        overflowWrap: "break-word", // Prevent text overflow
+                                        wordBreak: "break-word",
+                                    }}
+                                >
                                     {selectedProduct.name}
                                 </Typography>
 
-                                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        mb: 2,
+                                        overflowWrap: "break-word",
+                                        wordBreak: "break-word",
+                                    }}
+                                >
                                     {selectedProduct.description ||
                                         "Discover the perfect addition to your daily needs with our premium-quality product."}
                                 </Typography>
@@ -750,7 +764,14 @@ const Products = () => {
                                     )}
                                 </Box>
 
-                                <Typography variant="body2" sx={{ mb: 2 }}>
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        mb: 2,
+                                        overflowWrap: "break-word",
+                                        wordBreak: "break-word",
+                                    }}
+                                >
                                     {selectedProduct.quantity} pieces available
                                 </Typography>
 
@@ -762,9 +783,11 @@ const Products = () => {
                                     }}
                                 >
                                     {/* Favorite Icon to Open Drawer */}
-                                    <IconButton onClick={() => (dispatch(faviratecard(selectedProduct)))} color="error" >
+                                    <IconButton
+                                        onClick={() => dispatch(faviratecard(selectedProduct))}
+                                        color="error"
+                                    >
                                         <FavoriteIcon />
-                                        {/* this is a favitee */}
                                     </IconButton>
 
                                     <Button
@@ -780,6 +803,7 @@ const Products = () => {
                     )}
                 </Box>
             </Modal>
+
 
             {/* Drawer */}
             <Drawer
@@ -810,6 +834,7 @@ const Products = () => {
 };
 
 export default Products;
+
 
 
 

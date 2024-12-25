@@ -83,15 +83,15 @@ function DrawerAppBar(props) {
 
   const handleProfileModalOpen = () => {
     setProfileModalOpen(true);
-    setProfileUsername(username); // Pre-fill with the current username
-    setProfileEmail(""); // Optionally, pre-fill with the current email if needed
+    setProfileUsername(username);
+    setProfileEmail("");
   };
 
   const handleProfileModalClose = () => setProfileModalOpen(false);
 
   const handleProfileSave = () => {
-    setUsername(profileUsername); // Update the main username
-    setProfileModalOpen(false); // Close the modal
+    setUsername(profileUsername);
+    setProfileModalOpen(false);
   };
 
   const onRegisterSubmit = (data) => {
@@ -117,7 +117,7 @@ function DrawerAppBar(props) {
       setUserLoggedIn(true);
       setUsername(storedUser.name);
       setLoginModalOpen(false);
-      navigate("/");
+      navigate("/home");
     } else {
       alert("Invalid credentials! Please try again.");
     }
@@ -166,6 +166,18 @@ function DrawerAppBar(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+  const modalResponsiveStyles = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: { xs: "90%", sm: "400px" }, // Responsive width
+    bgcolor: "background.paper",
+    borderRadius: 5,
+    boxShadow: 24,
+    p: 4,
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -188,6 +200,7 @@ function DrawerAppBar(props) {
               alignItems: "center",
               gap: 2,
               marginLeft: "auto",
+
             }}
           >
             {navItems.map((item) => (
@@ -219,27 +232,42 @@ function DrawerAppBar(props) {
                   onClose={handleMenuClose}
                 >
                   <MenuItem>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/home" onClick={handleProfileModalOpen}>Profile</Link>
                   </MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>
             ) : (
-              <Button
-                variant="outlined"
-                onClick={handleLoginModalOpen}
-                sx={{
-                  textTransform: "capitalize",
-                  color: "green",
-                  borderColor: "green",
-                  "&:hover": {
-                    backgroundColor: "green",
-                    color: "white",
-                  },
-                }}
-              >
-                Join
-              </Button>
+              <ListItem disablePadding>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%", // Ensures the Box spans the full width of the drawer
+                    height: "100%", // Optional: Adjust height if needed
+                    textAlign: "center",
+                  }}
+                >
+                  <Button
+                  className=" sm:[ms-12]"
+                    variant="outlined"
+                    onClick={handleLoginModalOpen}
+                    sx={{
+                      textTransform: "capitalize",
+                      color: "green",
+                      borderColor: "green",
+                      "&:hover": {
+                        backgroundColor: "green",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Join
+                  </Button>
+                </Box>
+              </ListItem>
+
             )}
           </Box>
         </Toolbar>
@@ -269,19 +297,7 @@ function DrawerAppBar(props) {
         aria-labelledby="login-modal-title"
         aria-describedby="login-modal-description"
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 500,
-            bgcolor: "background.paper",
-            borderRadius: 5,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
+        <Box sx={modalResponsiveStyles}>
           <Typography variant="h5" sx={{ marginBottom: 5, textAlign: "center" }}>
             Login
           </Typography>
@@ -338,19 +354,7 @@ function DrawerAppBar(props) {
         aria-labelledby="register-modal-title"
         aria-describedby="register-modal-description"
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 500,
-            bgcolor: "background.paper",
-            borderRadius: 5,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
+        <Box sx={modalResponsiveStyles}>
           <Typography variant="h5" sx={{ marginBottom: 5, textAlign: "center" }}>
             Register
           </Typography>
@@ -408,25 +412,13 @@ function DrawerAppBar(props) {
       </Modal>
 
       {/* Profile Modal */}
-      {/* <Modal
+      <Modal
         open={isProfileModalOpen}
         onClose={handleProfileModalClose}
         aria-labelledby="profile-modal-title"
         aria-describedby="profile-modal-description"
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            borderRadius: 5,
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
+        <Box sx={modalResponsiveStyles}>
           <Typography variant="h5" sx={{ marginBottom: 3 }}>
             Edit Profile
           </Typography>
@@ -450,12 +442,15 @@ function DrawerAppBar(props) {
             fullWidth
             variant="contained"
             onClick={handleProfileSave}
-            sx={{ backgroundColor: "green", color: "white" }}
+            sx={{
+              backgroundColor: "green",
+              color: "white"
+            }}
           >
             Save
           </Button>
         </Box>
-      </Modal> */}
+      </Modal>
     </Box>
   );
 }

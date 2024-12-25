@@ -4,6 +4,7 @@ import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 import { Delete, minus, Plus } from '../../Slices/AddtoCart';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -24,7 +25,6 @@ function PageDrawer() {
     setState({ ...state, [anchor]: open });
   };
 
-  // Calculate total price and total items
   const totalPrice = cartitems.reduce(
     (acc, item) => acc + item.Price * item.quanitity,
     0
@@ -37,17 +37,31 @@ function PageDrawer() {
     } else {
       setMessage('Your order has been placed successfully!');
     }
-    setTimeout(() => setMessage(''), 3000); // Clear message after 3 seconds
+    setTimeout(() => setMessage(''), 3000);
   };
 
   const list = (anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 400 }}
       role="presentation"
-      onKeyDown={toggleDrawer(anchor, false)}
       display="flex"
       flexDirection="column"
     >
+      {/* Back Button */}
+      <Button
+        startIcon={<ArrowBackIcon />}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          padding: '16px',
+          color: 'primary.main',
+        }}
+        onClick={toggleDrawer(anchor, false)} // Close drawer
+      >
+        Back
+      </Button>
+
       <Typography
         variant="h6"
         sx={{
